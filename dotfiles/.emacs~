@@ -1,5 +1,5 @@
 ;; Amith's .emacs configuration
-;; requires sr-speedbar, powerline and the solarized-dark theme.
+
 
 ( cond
   (( string-match "linux" system-configuration )
