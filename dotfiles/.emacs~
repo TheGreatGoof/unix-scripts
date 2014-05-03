@@ -1,5 +1,5 @@
 ;; Amith's .emacs configuration
-
+;; requires sr-speedbar, powerline and the solarized-dark theme.
 
 ( cond
   (( string-match "linux" system-configuration )
@@ -16,6 +16,8 @@
       ;; Add my lisp files to the LOADPATH including sub-directories
       (let ((default-directory "d:/Amith/emacs-home/my-lisp/"))
         (normal-top-level-add-subdirs-to-load-path))
+      ;; try to improve slow performance on windows.
+      (setq w32-get-true-file-attributes nil)
    )
 )
 
@@ -28,10 +30,6 @@
 ;; Load all packages during .emacs. Solves issue with theme load as well.
 (setq package-enable-at-startup nil)
 (package-initialize)
-
-;; try to improve slow performance on windows.
-(setq w32-get-true-file-attributes nil)
-
 
 ;; Manual proxy configuration
 ;;(setq url-proxy-services '(("no_proxy" . "hostname\\.com")

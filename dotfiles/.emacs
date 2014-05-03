@@ -16,6 +16,8 @@
       ;; Add my lisp files to the LOADPATH including sub-directories
       (let ((default-directory "d:/Amith/emacs-home/my-lisp/"))
         (normal-top-level-add-subdirs-to-load-path))
+      ;; try to improve slow performance on windows.
+      (setq w32-get-true-file-attributes nil)
    )
 )
 
@@ -28,10 +30,6 @@
 ;; Load all packages during .emacs. Solves issue with theme load as well.
 (setq package-enable-at-startup nil)
 (package-initialize)
-
-;; try to improve slow performance on windows.
-(setq w32-get-true-file-attributes nil)
-
 
 ;; Manual proxy configuration
 ;;(setq url-proxy-services '(("no_proxy" . "hostname\\.com")
@@ -90,6 +88,32 @@
 ;; Commented out below as we may not require it.
 ;;(when (not indicate-empty-lines)
 ;;  (toggle-indicate-empty-lines))
+
+
+;; Start emacs in fullscreen.
+(defun toggle-fullscreen ()
+  (interactive)
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+	    		 '(2 "_NET_WM_STATE_MAXIMIZED_VERT" 0))
+  (x-send-client-message nil 0 nil "_NET_WM_STATE" 32
+	    		 '(2 "_NET_WM_STATE_MAXIMIZED_HORZ" 0))
+)
+(toggle-fullscreen)
+
+
+;; Remember opened files when restarting emacs.
+(require 'desktop)
+  (desktop-save-mode 1)
+  (defun my-desktop-save ()
+    (interactive)
+    ;; Don't call desktop-save-in-desktop-dir, as it prints a message.
+    (if (eq (desktop-owner) (emacs-pid))
+        (desktop-save desktop-dirname)))
+  (add-hook 'auto-save-hook 'my-desktop-save)
+
+
+;; Color term
+(add-hook 'shell-mode-hook 'ansi-color-for-comint-mode-on)
 
 ;; Set tab width and indent using spaces.
 (setq tab-width 4
